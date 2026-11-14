@@ -1,0 +1,24 @@
+# Build artifacts
+*.AppImage
+appimagetool
+*.exe
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Temporary
+/tmp/
+/temp/
+*.tmp
+
+# IDE
+.vscode/
+.idea/
+*.iml
