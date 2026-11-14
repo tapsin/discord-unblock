@@ -30,7 +30,10 @@ try {
         Write-Host "winws.exe bulunamadi. Zapret sürümü indiriliyor..." -ForegroundColor Yellow
         Invoke-WebRequest -Uri $ZAPRET_URL -OutFile $ZIP_PATH
         Expand-Archive -Path $ZIP_PATH -DestinationPath $EXTRACT_DIR -Force
-        $srcDir = Join-Path $EXTRACT_DIR 'zapret-v72.13' 'binaries' 'windows-x86_64'
+        # Join-Path sadece iki parametre alir; zincirleyerek kullan
+        $srcDir = Join-Path $EXTRACT_DIR 'zapret-v72.13'
+        $srcDir = Join-Path $srcDir 'binaries'
+        $srcDir = Join-Path $srcDir 'windows-x86_64'
         if (-not (Test-Path -LiteralPath $srcDir)) { throw "winws.exe kaynak dizini bulunamadi: $srcDir" }
         Copy-Item -LiteralPath (Join-Path $srcDir 'winws.exe') -Destination $here -Force
         Copy-Item -LiteralPath (Join-Path $srcDir 'WinDivert.dll') -Destination $here -Force
