@@ -104,4 +104,4 @@ if (-not $driverService) {
     }
 }
 
-& $winws --wf-tcp=443 --dpi-desync=fake --dpi-desync-ttl=6
+& $winws --wf-tcp=443,80 --dpi-desync=multisplit --dpi-desync-fooling=badseq --dpi-desync-repeats=3 --filter-l7=discord --hostlist-domains=discord.com,gateway.discord.gg,cdn.discordapp.com,api.discordapp.com,ptb.discordapp.com,canary.discordapp.com --dpi-desync-ttl=6
