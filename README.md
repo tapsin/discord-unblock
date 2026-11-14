@@ -57,7 +57,18 @@ Uygulama ilk açılışta eksik paketleri tespit eder ve `pkexec` ile kurmayı d
 
 ## Windows
 
-### Çalıştırma
+### En kolay yol: `.cmd` dosyası (önerilen)
+
+1. `windows/discord-unblock.cmd` dosyasını masaüstündeki **DNS klasörüne** kopyalayın.
+2. Dosyaya sağ tıklayıp **Yönetici olarak çalıştır** seçin.
+3. `.cmd` otomatik olarak:
+   - Eksik `winws.exe`, `WinDivert.dll`, `WinDivert64.sys` dosyalarını **zapret v72.13**'ten indirir.
+   - Bu dosyaları `.cmd`'nin bulunduğu DNS klasörüne kopyalar.
+   - `winws.exe`'yi aynı klasörden başlatır.
+
+> Dosyalar bir kez indikten sonra sonraki çalıştırmalarda indirme adımı atlanır; doğrudan `winws.exe` başlar.
+
+### Alternatif: `.ps1` PowerShell dosyası
 
 1. `windows/discord-unblock.ps1` dosyasını indirin.
 2. PowerShell'i **Yönetici olarak** açın.
