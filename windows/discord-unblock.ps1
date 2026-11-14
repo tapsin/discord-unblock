@@ -4,8 +4,14 @@
 
 $ErrorActionPreference = 'Stop'
 
-$here = Split-Path -Parent ([Environment]::GetCommandLineArgs()[0])
-if (-not $here -or -not (Test-Path $here)) { $here = (Get-Location).Path }
+# Çalisan dizini her zaman .ps1 dosyasinin oldugu dizin olarak al
+$here = $PSScriptRoot
+if (-not $here) {
+    $cmdPath = $MyInvocation.MyCommand.Path
+    if ($cmdPath) { $here = Split-Path -Parent $cmdPath }
+}
+if (-not $here -or -not (Test-Path -LiteralPath $here)) { $here = (Get-Location).Path }
+
 $winws = Join-Path $here 'winws.exe'
 $winDivertDll = Join-Path $here 'WinDivert.dll'
 $winDivertSys = Join-Path $here 'WinDivert64.sys'
