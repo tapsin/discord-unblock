@@ -4,6 +4,22 @@
 
 $ErrorActionPreference = 'Stop'
 
+# Yönetici yetkisi yoksa UAC ile yeniden başlat
+$principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "Yönetici yetkisi isteniyor..." -ForegroundColor Yellow
+    $scriptPath = $PSCommandPath
+    if (-not $scriptPath) { $scriptPath = $MyInvocation.MyCommand.Path }
+    if ($scriptPath) {
+        $psArgs = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
+        Start-Process -FilePath "powershell.exe" -Verb RunAs -ArgumentList $psArgs
+    } else {
+        Write-Host "Script yolu bulunamadi. Lutfen PowerShell'i yonetici olarak acip tekrar deneyin." -ForegroundColor Red
+        Read-Host "Kapatmak icin Enter'a basin"
+    }
+    exit
+}
+
 # Çalisan dizini her zaman .ps1 dosyasinin oldugu dizin olarak al
 $here = $PSScriptRoot
 if (-not $here) {
@@ -73,4 +89,19 @@ if (-not (Test-Path -LiteralPath $cygwinDll)) {
 
 Set-Location $here
 Write-Host "Discord bypass baslatiliyor. Durdurmak icin bu pencereyi kapat veya Ctrl+C." -ForegroundColor Green
+
+# WinDivert driver yuklenmesi gerekir
+$driverService = Get-Service -Name WinDivert -ErrorAction SilentlyContinue
+if (-not $driverService) {
+    Write-Host "WinDivert servisi yukleniyor..." -ForegroundColor Yellow
+    $driverPath = Join-Path $here 'WinDivert64.sys'
+    try {
+        & sc.exe create WinDivert binPath= "$driverPath" type= kernel | Out-Null
+        & sc.exe start WinDivert | Out-Null
+        Start-Sleep -Seconds 2
+    } catch {
+        Write-Host "WinDivert driver yuklenemedi. Lutfen antiviruzu gecici olarak kapatin." -ForegroundColor Red
+    }
+}
+
 & $winws --wf-tcp=443 --dpi-desync=fake --dpi-desync-ttl=6
