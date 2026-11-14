@@ -27,7 +27,7 @@ if not exist "%EXT%\zapret-v72.13\binaries\windows-x86_64\winws.exe" (
 )
 
 echo Zapret dosyalari DNS klasorune kopyiliyor...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$src = '%EXT%\zapret-v72.13\binaries\windows-x86_64'; $dst = '%~dp0'; foreach($f in @('winws.exe','WinDivert.dll','WinDivert64.sys')){ Copy-Item -LiteralPath (Join-Path -Path $src -ChildPath $f) -Destination $dst -Force }"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$src = '%EXT%\zapret-v72.13\binaries\windows-x86_64'; $dst = '%~dp0'; foreach($f in @('winws.exe','WinDivert.dll','WinDivert64.sys','cygwin1.dll')){ Copy-Item -LiteralPath (Join-Path -Path $src -ChildPath $f) -Destination $dst -Force }"
 
 :run
 echo Discord bypass calisiyor...

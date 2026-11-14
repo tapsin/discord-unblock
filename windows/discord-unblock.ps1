@@ -15,6 +15,7 @@ if (-not $here -or -not (Test-Path -LiteralPath $here)) { $here = (Get-Location)
 $winws = Join-Path $here 'winws.exe'
 $winDivertDll = Join-Path $here 'WinDivert.dll'
 $winDivertSys = Join-Path $here 'WinDivert64.sys'
+$cygwinDll = Join-Path $here 'cygwin1.dll'
 
 $ZAPRET_URL = 'https://github.com/bol-van/zapret/releases/download/v72.13/zapret-v72.13.zip'
 $ZIP_PATH = Join-Path $env:TEMP ("zapret-" + [guid]::NewGuid().ToString("N") + ".zip")
@@ -38,6 +39,7 @@ try {
         Copy-Item -LiteralPath (Join-Path $srcDir 'winws.exe') -Destination $here -Force
         Copy-Item -LiteralPath (Join-Path $srcDir 'WinDivert.dll') -Destination $here -Force
         Copy-Item -LiteralPath (Join-Path $srcDir 'WinDivert64.sys') -Destination $here -Force
+        Copy-Item -LiteralPath (Join-Path $srcDir 'cygwin1.dll') -Destination $here -Force
         Write-Host "winws.exe ve WinDivert driver dosyalari indirildi." -ForegroundColor Green
     }
 }
@@ -59,6 +61,12 @@ if (-not (Test-Path -LiteralPath $winDivertDll)) {
 
 if (-not (Test-Path -LiteralPath $winDivertSys)) {
     Write-Host "HATA: WinDivert64.sys yok: $winDivertSys" -ForegroundColor Red
+    Read-Host "Kapatmak icin Enter'a basin"
+    exit 1
+}
+
+if (-not (Test-Path -LiteralPath $cygwinDll)) {
+    Write-Host "HATA: cygwin1.dll yok: $cygwinDll" -ForegroundColor Red
     Read-Host "Kapatmak icin Enter'a basin"
     exit 1
 }
